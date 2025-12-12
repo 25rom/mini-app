@@ -13,8 +13,8 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #B2EBF2;
-            font-family: font-family: 'Open Sans', sans-serif;
+            background-color: #E0F7FA;
+            font-family: 'Open Sans', sans-serif;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -29,7 +29,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: white;
+            background: #B2EBF2;
             z-index: 10;
             display: flex;
             flex-direction: column;
@@ -216,7 +216,9 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-
+        // Красим "шапку" и "дно" самого Телеграма в твой цвет
+        tg.setHeaderColor('#E0F7FA');
+        tg.setBackgroundColor('#E0F7FA');
         // ==========================================
         // БАЗА КАРТ
         // ==========================================
@@ -382,9 +384,7 @@
             drawBtn.classList.add('btn-primary');
             timerDisplay.innerText = "";
         }
-
-    </script>
-    // ==========================================
+// ==========================================
         // СЕКРЕТНЫЙ СБРОС (РЕЖИМ АДМИНА)
         // ==========================================
         
@@ -412,5 +412,6 @@
                 location.reload(); 
             }
         });
+    </script>
 </body>
 </html>
