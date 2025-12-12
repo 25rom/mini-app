@@ -294,7 +294,7 @@
                 }
             }
 
-            // СЦЕНАРИЙ 2: Можно тянуть новую (первый раз или таймер истек)
+           // СЦЕНАРИЙ 2: Можно тянуть новую (первый раз или таймер истек)
             unlockButton();
             
             // ВАЖНО: Скрываем текст подсказки во время настройки
@@ -306,24 +306,38 @@
             frontImg.src = mandalaUrl; 
             backImg.src = mandalaUrl; 
 
-            // 2. Блокируем кнопку на 3 секунды
-            const originalText = "Тянуть карту";
+            // 2. Блокируем кнопку на 4 секунды и запускаем анимацию текста
+            const originalText = "вытащить новую карточку";
             
             drawBtn.classList.add('btn-disabled'); // Делаем серой
             drawBtn.classList.remove('btn-primary');
-            drawBtn.innerText = "Настройка..."; // Пишем текст ожидания
             
-            // Отключаем клик по кнопке (визуально и программно)
+            // Отключаем клик по кнопке
             drawBtn.style.pointerEvents = 'none'; 
 
-            // 3. Таймер на 3 секунды
+            // === АНИМАЦИЯ ТЕКСТА ===
+            
+            // Старт (0 сек)
+            drawBtn.innerText = "Вдох...";
+
+            // Через 1.5 сек
+            setTimeout(() => {
+                drawBtn.innerText = "Выдох...";
+            }, 1500);
+
+            // Через 3.0 сек
+            setTimeout(() => {
+                drawBtn.innerText = "Синхрония...";
+            }, 3000);
+
+            // 3. Финал через 4 секунды
             setTimeout(() => {
                 // Включаем кнопку обратно
                 drawBtn.classList.remove('btn-disabled');
                 drawBtn.classList.add('btn-primary');
                 drawBtn.innerText = originalText;
                 drawBtn.style.pointerEvents = 'auto'; 
-            }, 3000); // 3000 миллисекунд = 3 секунды
+            }, 4000); 
         }
 
         // === 3. РАНДОМ ПО ЗОЛОТОМУ СЕЧЕНИЮ ===
@@ -407,7 +421,7 @@
         }
 
         function unlockButton() {
-            drawBtn.innerText = "Тянуть карту";
+            drawBtn.innerText = "вытащить карточку";
             drawBtn.classList.remove('btn-disabled');
             drawBtn.classList.add('btn-primary');
             timerDisplay.innerText = "";
