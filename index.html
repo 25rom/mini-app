@@ -366,14 +366,6 @@
             // НОВОЕ: Показываем текст подсказки
             document.getElementById('hintText').style.opacity = '1';
         }
-            
-            // 3. СОХРАНЯЕМ В ПАМЯТЬ
-            localStorage.setItem('savedCardIndex', index);
-            localStorage.setItem('lastDrawTime', Date.now());
-
-            // 4. Блокируем кнопку
-            lockButton(COOLDOWN_MS);
-        }
 
         // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
         
