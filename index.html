@@ -120,7 +120,7 @@
         img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             display: block;
         }
 
@@ -188,14 +188,14 @@
             
             <p>Продолжай дышать. Сфокусируйся на внутреннем запросе или ощущении</p>
             
-            <p>Когда ощутишь тишину пространства, жми<br><b>✨Синхронизироваться✨</b></p>
+            <p>Когда почувствуешь тишину пространства, жми<br><b>✨СО-НАСТРОИТЬСЯ✨</b></p>
             
             <p>Карточка направит намерение на ближайшее время</p>
             
             <p>Практикуй асаны, дыши, медитируй ✨ возвращайся к ней в течение дня</p>
         </div>
         
-        <button class="btn btn-primary" onclick="startGame()">✨Синхронизироваться✨</button>
+        <button class="btn btn-primary" onclick="startGame()">✨СО-НАСТРОИТЬСЯ✨</button>
     </div>
 
     <!-- ОСНОВНОЙ ЭКРАН -->
@@ -214,8 +214,8 @@
         <div class="hint-text" id="hintText">нажми на карточку, чтобы перевернуть</div>
 
         <!-- Кнопка действия -->
-        <button id="drawBtn" class="btn btn-primary" onclick="handleDrawClick()">тянуть карточку</button>
-        <div id="timerDisplay" class="hint-text timer-display"></div>
+        <button id="drawBtn" class="btn btn-primary" onclick="handleDrawClick()">увидеть вектор</button>
+        <div id="timerDisplay" class="timer-display"></div>
     </div>
 
     <script>
@@ -356,7 +356,7 @@
                 performDraw(newIndex);
             }
         }
-
+        
         function performDraw(index) {
             loadCard(index);
             localStorage.setItem('savedCardIndex', index);
