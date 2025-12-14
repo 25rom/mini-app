@@ -123,7 +123,7 @@
             justify-content: center;
             opacity: 0;
             transition: opacity 1s;
-            position: relative; /* Важно для абсолютного позиционирования кнопки */
+            position: relative;
         }
 
         .scene {
@@ -160,7 +160,6 @@
             overflow: hidden;
         }
 
-        /* Вот это свойство исправляет зеркальность! */
         .card__face--back {
             transform: rotateY(180deg);
         }
@@ -209,13 +208,69 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 5px; /* Уменьшил отступ */
         }
 
         .collection-title {
             font-size: 20px;
             font-weight: 600;
             color: #00796B;
+        }
+
+        /* Пояснение про скачивание */
+        .collection-subtitle {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* Блок ввода промокода */
+        .promo-box {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .promo-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #00796B;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .promo-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .promo-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .promo-btn {
+            background-color: #00796B;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .promo-status {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #00796B;
+            height: 15px;
         }
 
         /* Сетка коллекции */
@@ -227,8 +282,8 @@
         }
 
         .collection-item {
-            aspect-ratio: 16/9; /* Пропорция как у твоих карт */
-            background-color: #B0BEC5; /* Серый цвет закрытой карты */
+            aspect-ratio: 16/9; 
+            background-color: #B0BEC5; 
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -241,7 +296,6 @@
             transition: transform 0.2s;
         }
         
-        /* Стили для открытой карты */
         .collection-item.unlocked {
             background-color: white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -258,6 +312,24 @@
             transform: scale(0.95);
         }
 
+        /* Кнопка скачивания */
+        .download-mini-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 5;
+            font-size: 16px;
+        }
+
     </style>
 </head>
 <body>
@@ -266,9 +338,10 @@
     <div id="welcome-screen">
         <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHpydDhzaTZxbGw3azZ3eW1xcjNvb2FmdmJjY3drcTkxdWhzbG1mcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/flqS9MxwSjkgdO5UCe/giphy.gif" class="welcome-gif" alt="Intro">
         <div class="welcome-text">
-            <p>Сделай глубокий вдох и длинный выдох...</p>
-            <p>Сфокусируйся на внутреннем запросе.</p>
-            <p>Когда почувствуешь тишину, жми<br><b>✨ СО-НАСТРОИТЬСЯ ✨</b></p>
+            <p>Сделай глубокий вдох и длинный выдох...Расслабь лицо и плечи. Отпусти напряжение, желания и ожидания</p>
+            <p>Сфокусируйся на внутреннем запросе...Продолжай дышать</p>
+            <p>Когда почувствуешь тишину пространства, жми<br><b>✨ СО-НАСТРОИТЬСЯ ✨</b></p>
+            <p>Практикуй асаны, дыши, медитируй ✨ Скачай карточку и возвращайся к ней в течение дня</p>
         </div>
         <button class="btn btn-primary" onclick="startGame()">✨ СО-НАСТРОИТЬСЯ ✨</button>
     </div>
@@ -307,8 +380,25 @@
     <div id="collection-screen">
         <div class="collection-header">
             <div class="collection-title">Мои карты</div>
-            <button onclick="closeCollection()" style="background:none; border:none; font-size:24px;">✕</button>
+            <button onclick="closeCollection()" style="background:none; border:none; font-size:24px; color:#555;">✕</button>
         </div>
+        
+        <!-- Пояснение про скачивание -->
+        <div class="collection-subtitle">
+            Чтобы сохранить карту, нажми на значок ⬇️ в углу карточки.
+            Картинка откроется в браузере — сохрани её как фото.
+        </div>
+
+        <!-- Блок Промокода (Режима) -->
+        <div class="promo-box">
+            <span class="promo-label">Режим</span>
+            <div class="promo-input-group">
+                <input type="text" id="promoInput" class="promo-input" placeholder="Введите код...">
+                <button class="promo-btn" onclick="checkPromoCode()">OK</button>
+            </div>
+            <div id="promoStatus" class="promo-status"></div>
+        </div>
+
         <div class="collection-grid" id="collectionGrid">
             <!-- Сюда скрипт сам добавит квадратики -->
         </div>
@@ -340,8 +430,14 @@
             { front: 'zabota.jpg', back: 'back2.jpg'}
         ];
 
-        const COOLDOWN_HOURS = 13.5;
-        const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000; 
+        // --- НАСТРОЙКИ ВРЕМЕНИ И РЕЖИМОВ ---
+        // Стандарт: 12 часов
+        const STANDARD_COOLDOWN_MS = 12 * 60 * 60 * 1000; 
+        
+        // Промо (simvol): 3 карты за 8 часов
+        const PROMO_CODE_VALUE = "simvol";
+        const PROMO_COOLDOWN_MS = 8 * 60 * 60 * 1000;
+        const PROMO_LIMIT_COUNT = 3;
 
         // Переменные
         let currentCardIndex = -1;
@@ -365,50 +461,84 @@
                 gameScreen.style.display = 'flex';
                 setTimeout(() => { gameScreen.style.opacity = '1'; }, 100);
             }, 500);
+            
+            // Проверяем, активен ли промокод при старте
+            updatePromoUI();
             checkState();
         }
 
         // === 2. ПРОВЕРКА СОСТОЯНИЯ ===
         function checkState() {
-            const lastDrawTime = localStorage.getItem('lastDrawTime');
-            const savedCardIndex = localStorage.getItem('savedCardIndex');
             const now = Date.now();
+            const lastDrawTime = localStorage.getItem('lastDrawTime'); // Для стандарта
+            const savedCardIndex = localStorage.getItem('savedCardIndex');
+            
+            // Получаем историю вытягиваний для ПРОМО режима
+            let drawHistory = JSON.parse(localStorage.getItem('drawHistory') || '[]');
+            
+            // Определяем, активен ли промокод
+            const isPromo = localStorage.getItem('isPromoActive') === 'true';
 
-            // Если есть сохраненная последняя карта
-            if (lastDrawTime && savedCardIndex !== null) {
-                const timePassed = now - parseInt(lastDrawTime);
-                if (timePassed < COOLDOWN_MS) {
-                    // Таймер идет - показываем карту
-                    loadCard(parseInt(savedCardIndex));
-                    lockButton(COOLDOWN_MS - timePassed);
-                    hintText.style.opacity = '1';
-                    return; 
+            // ЛОГИКА БЛОКИРОВКИ
+            let isLocked = false;
+            let timeRemaining = 0;
+
+            if (isPromo) {
+                // --- РЕЖИМ ПРОМО (3 карты за 8 часов) ---
+                // Оставляем только те записи, что были менее 8 часов назад
+                drawHistory = drawHistory.filter(time => (now - time) < PROMO_COOLDOWN_MS);
+                localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+
+                if (drawHistory.length >= PROMO_LIMIT_COUNT) {
+                    isLocked = true;
+                    // Время до разблокировки самой старой карты
+                    const oldestDraw = Math.min(...drawHistory);
+                    timeRemaining = PROMO_COOLDOWN_MS - (now - oldestDraw);
+                }
+            } else {
+                // --- СТАНДАРТНЫЙ РЕЖИМ (1 карта за 12 часов) ---
+                if (lastDrawTime) {
+                    const timePassed = now - parseInt(lastDrawTime);
+                    if (timePassed < STANDARD_COOLDOWN_MS) {
+                        isLocked = true;
+                        timeRemaining = STANDARD_COOLDOWN_MS - timePassed;
+                    }
                 }
             }
 
-            // Иначе - новая игра
-            unlockButton();
-            hintText.style.opacity = '0';
-            
-            const mandalaUrl = 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzd3YnFwcXRnODU1eGJya3N0ODg2anp6M3U2dzJhbWNnbWw2aGJzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Pu1SRAVyJJnF70sU3r/giphy.gif';
-            frontImg.src = mandalaUrl; 
-            backImg.src = mandalaUrl; 
+            // ПРИМЕНЯЕМ РЕШЕНИЕ
+            if (isLocked) {
+                // Если заблокировано - показываем последнюю сохраненную карту
+                if (savedCardIndex !== null) loadCard(parseInt(savedCardIndex));
+                
+                lockButton(timeRemaining);
+                hintText.style.opacity = '1';
+                
+            } else {
+                // Если доступно - запускаем прелюдию (Мандала)
+                unlockButton();
+                hintText.style.opacity = '0';
+                
+                const mandalaUrl = 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzd3YnFwcXRnODU1eGJya3N0ODg2anp6M3U2dzJhbWNnbWw2aGJzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Pu1SRAVyJJnF70sU3r/giphy.gif';
+                frontImg.src = mandalaUrl; 
+                backImg.src = mandalaUrl; 
 
-            // Блокировка и Дыхание
-            const originalText = "вытащить новую карточку";
-            drawBtn.classList.add('btn-disabled'); 
-            drawBtn.classList.remove('btn-primary');
-            drawBtn.style.pointerEvents = 'none'; 
+                // Блокировка и Дыхание
+                const originalText = "вытащить новую карточку";
+                drawBtn.classList.add('btn-disabled'); 
+                drawBtn.classList.remove('btn-primary');
+                drawBtn.style.pointerEvents = 'none'; 
 
-            drawBtn.innerText = "Вдох...";
-            setTimeout(() => { drawBtn.innerText = "Выдох..."; }, 1500);
-            setTimeout(() => { drawBtn.innerText = "Синхрония..."; }, 3000);
-            setTimeout(() => {
-                drawBtn.classList.remove('btn-disabled');
-                drawBtn.classList.add('btn-primary');
-                drawBtn.innerText = originalText;
-                drawBtn.style.pointerEvents = 'auto'; 
-            }, 4000); 
+                drawBtn.innerText = "Вдох...";
+                setTimeout(() => { drawBtn.innerText = "Выдох..."; }, 1500);
+                setTimeout(() => { drawBtn.innerText = "Синхрония..."; }, 3000);
+                setTimeout(() => {
+                    drawBtn.classList.remove('btn-disabled');
+                    drawBtn.classList.add('btn-primary');
+                    drawBtn.innerText = originalText;
+                    drawBtn.style.pointerEvents = 'auto'; 
+                }, 4000); 
+            }
         }
 
         // === 3. МЕХАНИКА ВЫТЯГИВАНИЯ ===
@@ -433,19 +563,81 @@
 
         function performDraw(index) {
             loadCard(index);
-            
-            // 1. Сохраняем "текущую" (для таймера)
+            const now = Date.now();
+
+            // 1. Сохраняем "текущую" карту (визуально)
             localStorage.setItem('savedCardIndex', index);
-            localStorage.setItem('lastDrawTime', Date.now());
-
-            // 2. Сохраняем в КОЛЛЕКЦИЮ (Массив)
+            
+            // 2. Сохраняем в КОЛЛЕКЦИЮ
             addToCollection(index);
+            
+            // 3. ОБНОВЛЯЕМ ТАЙМЕРЫ (В зависимости от режима)
+            const isPromo = localStorage.getItem('isPromoActive') === 'true';
+            
+            if (isPromo) {
+                // Добавляем запись в историю
+                let drawHistory = JSON.parse(localStorage.getItem('drawHistory') || '[]');
+                drawHistory.push(now);
+                localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+                
+                // Проверяем, исчерпан ли лимит (3 шт)
+                // Фильтруем старые записи
+                drawHistory = drawHistory.filter(time => (now - time) < PROMO_COOLDOWN_MS);
+                
+                if (drawHistory.length >= PROMO_LIMIT_COUNT) {
+                     // Блокируем на время до освобождения слота
+                     const oldestDraw = Math.min(...drawHistory);
+                     const timeRemaining = PROMO_COOLDOWN_MS - (now - oldestDraw);
+                     lockButton(timeRemaining);
+                } else {
+                    // Если лимит не исчерпан, просто показываем карту, кнопку не лочим
+                    // Но меняем текст, чтобы было понятно
+                    const left = PROMO_LIMIT_COUNT - drawHistory.length;
+                    drawBtn.innerText = `Можно вытянуть ещё: ${left}`;
+                }
 
-            lockButton(COOLDOWN_MS);
+            } else {
+                // Стандартный режим
+                localStorage.setItem('lastDrawTime', now);
+                lockButton(STANDARD_COOLDOWN_MS);
+            }
+
             hintText.style.opacity = '1';
         }
 
-        // === 4. ЛОГИКА КОЛЛЕКЦИИ ===
+        // === 4. ПРОМОКОД И КОЛЛЕКЦИЯ ===
+
+        function updatePromoUI() {
+            const isPromo = localStorage.getItem('isPromoActive') === 'true';
+            const statusDiv = document.getElementById('promoStatus');
+            const inputField = document.getElementById('promoInput');
+            
+            if (isPromo) {
+                statusDiv.innerText = "✅ Режим '3 карты / 8 часов' активен";
+                inputField.value = PROMO_CODE_VALUE;
+                inputField.disabled = true;
+            } else {
+                statusDiv.innerText = "Стандарт: 1 карта / 12 часов";
+            }
+        }
+
+        function checkPromoCode() {
+            const input = document.getElementById('promoInput').value.trim().toLowerCase();
+            const statusDiv = document.getElementById('promoStatus');
+            
+            if (input === PROMO_CODE_VALUE) {
+                localStorage.setItem('isPromoActive', 'true');
+                alert("Код принят! Включен режим: 3 карты каждые 8 часов.");
+                updatePromoUI();
+                
+                // Сразу проверяем состояние (вдруг уже можно тянуть)
+                unlockButton(); // Сбрасываем визуально
+                checkState();   // Пересчитываем права
+            } else {
+                statusDiv.innerText = "❌ Неверный код";
+                setTimeout(() => { updatePromoUI(); }, 2000);
+            }
+        }
         
         function getUnlockedCards() {
             const storage = localStorage.getItem('unlockedCards');
@@ -463,6 +655,7 @@
         function openCollection() {
             gameScreen.style.display = 'none';
             collectionScreen.style.display = 'flex';
+            updatePromoUI();
             renderCollectionGrid();
         }
 
@@ -484,6 +677,19 @@
                     const img = document.createElement('img');
                     img.src = 'img/' + card.front;
                     item.appendChild(img);
+                    
+                    // КНОПКА СКАЧИВАНИЯ
+                    const downloadBtn = document.createElement('div');
+                    downloadBtn.className = 'download-mini-btn';
+                    downloadBtn.innerHTML = '⬇️'; 
+                    
+                    downloadBtn.onclick = (e) => {
+                        e.stopPropagation(); 
+                        const fullLink = window.location.href.replace('index.html', '') + 'img/' + card.front;
+                        Telegram.WebApp.openLink(fullLink);
+                    };
+                    
+                    item.appendChild(downloadBtn);
                     
                     item.onclick = () => {
                         loadCard(index); 
@@ -516,10 +722,13 @@
             drawBtn.classList.remove('btn-primary');
             updateTimer(remainingTime);
             
-            const interval = setInterval(() => {
+            // Если таймер уже был запущен, очищаем его, чтобы не дублировать
+            if (window.activeInterval) clearInterval(window.activeInterval);
+
+            window.activeInterval = setInterval(() => {
                 remainingTime -= 1000;
                 if (remainingTime <= 0) {
-                    clearInterval(interval);
+                    clearInterval(window.activeInterval);
                     location.reload(); 
                 } else {
                     updateTimer(remainingTime);
@@ -538,6 +747,7 @@
             drawBtn.classList.remove('btn-disabled');
             drawBtn.classList.add('btn-primary');
             timerDisplay.innerText = "";
+            if (window.activeInterval) clearInterval(window.activeInterval);
         }
 
         // Секретный сброс (7 кликов)
@@ -550,7 +760,7 @@
 
             if (tapCount >= 7) {
                 localStorage.clear(); 
-                alert("🛠 Сброс полный");
+                alert("🛠 Сброс таймера");
                 location.reload(); 
             }
         });
