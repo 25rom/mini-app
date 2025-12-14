@@ -24,6 +24,28 @@
             color: #333;
         }
 
+        /* === КНОПКА КОЛЛЕКЦИИ (ВЕРХНИЙ УГОЛ) === */
+        .collection-btn-corner {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background-color: white;
+            border: none;
+            border-radius: 12px;
+            color: #00796B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 30;
+            transition: transform 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .collection-btn-corner:active { transform: scale(0.9); }
+
         /* === ОБЩИЕ КНОПКИ === */
         .btn {
             padding: 16px 32px;
@@ -54,15 +76,6 @@
             color: #fff;
             cursor: default;
             box-shadow: none;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #00796B;
-            color: #00796B;
-            margin-top: 5px;
-            padding: 10px 20px;
-            font-size: 15px;
         }
 
         /* === ЭКРАН ПРИВЕТСТВИЯ === */
@@ -110,6 +123,7 @@
             justify-content: center;
             opacity: 0;
             transition: opacity 1s;
+            position: relative; /* Важно для абсолютного позиционирования кнопки */
         }
 
         .scene {
@@ -125,7 +139,7 @@
             height: 100%;
             position: relative;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-: preserve-3d;
+            transform-style: preserve-3d;
         }
 
         .card.is-flipped {
@@ -146,6 +160,7 @@
             overflow: hidden;
         }
 
+        /* Вот это свойство исправляет зеркальность! */
         .card__face--back {
             transform: rotateY(180deg);
         }
@@ -242,30 +257,7 @@
         .collection-item:active {
             transform: scale(0.95);
         }
-/* Кнопка коллекции в правом верхнем углу */
-        .collection-btn-corner {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 44px;
-            height: 44px;
-            background-color: white; /* Белый фон для контраста */
-            border: none;
-            border-radius: 12px; /* Скругленные углы */
-            color: #00796B; /* Цвет иконки */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Легкая тень */
-            z-index: 30;
-            transition: transform 0.2s;
-            -webkit-tap-highlight-color: transparent;
-        }
 
-        .collection-btn-corner:active {
-            transform: scale(0.90);
-        }
     </style>
 </head>
 <body>
@@ -283,29 +275,9 @@
 
     <!-- 2. ИГРОВОЙ ЭКРАН -->
     <div id="game-screen">
-        <div class="scene" onclick="flipCard()">
-            <div class="card" id="myCard">
-                <div class="card__face card__face--front">
-                    <img id="frontImg" src="" alt="">
-                </div>
-                <div class="card__face card__face--back">
-                    <img id="backImg" src="" alt="">
-                </div>
-            </div>
-        </div>
-
-        <div class="hint-text" id="hintText">нажми на карточку, чтобы перевернуть</div>
-
-        <button id="drawBtn" class="btn btn-primary" onclick="handleDrawClick()">взять направление</button>
-        <div id="timerDisplay" class="timer-display"></div>
-
-        <!-- Кнопка перехода в коллекцию -->
-       <!-- 2. ИГРОВОЙ ЭКРАН -->
-    <div id="game-screen">
         
-        <!-- НОВАЯ КНОПКА КОЛЛЕКЦИИ (Вверху справа) -->
+        <!-- НОВАЯ КНОПКА КОЛЛЕКЦИИ (ВЕРХНИЙ ПРАВЫЙ УГОЛ) -->
         <button class="collection-btn-corner" onclick="openCollection()">
-            <!-- Иконка 4 квадратика (SVG) -->
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="7" height="7"></rect>
                 <rect x="14" y="3" width="7" height="7"></rect>
@@ -329,8 +301,6 @@
 
         <button id="drawBtn" class="btn btn-primary" onclick="handleDrawClick()">взять направление</button>
         <div id="timerDisplay" class="timer-display"></div>
-
-        <!-- СТАРУЮ КНОПКУ "Моя коллекция" ОТСЮДА НУЖНО УДАЛИТЬ -->
     </div>
 
     <!-- 3. ЭКРАН КОЛЛЕКЦИИ -->
@@ -353,7 +323,6 @@
         // ==========================================
         // БАЗА КАРТ
         // ==========================================
-        // Добавил поле color (на будущее, если захочешь менять цвет фона закрытых)
         const cardsDatabase = [
             { front: 'reshimost.jpg', back: 'reshimost_back.jpg', color: '#FFCDD2' },
             { front: 'zabota.jpg', back: 'zabota_back.jpg', color: '#C8E6C9' },
@@ -478,13 +447,11 @@
 
         // === 4. ЛОГИКА КОЛЛЕКЦИИ ===
         
-        // Получить массив открытых карт из памяти
         function getUnlockedCards() {
             const storage = localStorage.getItem('unlockedCards');
             return storage ? JSON.parse(storage) : [];
         }
 
-        // Добавить карту в коллекцию
         function addToCollection(index) {
             let unlocked = getUnlockedCards();
             if (!unlocked.includes(index)) {
@@ -493,50 +460,38 @@
             }
         }
 
-        // Открыть экран коллекции
         function openCollection() {
             gameScreen.style.display = 'none';
             collectionScreen.style.display = 'flex';
             renderCollectionGrid();
         }
 
-        // Закрыть экран коллекции
         function closeCollection() {
             collectionScreen.style.display = 'none';
             gameScreen.style.display = 'flex';
         }
 
-        // Отрисовка сетки
         function renderCollectionGrid() {
-            collectionGrid.innerHTML = ''; // Очищаем
+            collectionGrid.innerHTML = ''; 
             const unlocked = getUnlockedCards();
 
-            // Создаем квадратики для КАЖДОЙ карты в базе
             cardsDatabase.forEach((card, index) => {
                 const item = document.createElement('div');
                 item.className = 'collection-item';
                 
-                // Если карта открыта
                 if (unlocked.includes(index)) {
                     item.classList.add('unlocked');
-                    // Вставляем картинку
                     const img = document.createElement('img');
                     img.src = 'img/' + card.front;
                     item.appendChild(img);
                     
-                    // Клик по карте в коллекции -> открывает её в игре
                     item.onclick = () => {
-                        loadCard(index); // Загружаем её на сцену
-                        closeCollection(); // Закрываем коллекцию
+                        loadCard(index); 
+                        closeCollection(); 
                         hintText.style.opacity = '1';
-                        // Если таймер не активен, можно бы что-то придумать, 
-                        // но пока просто показываем как просмотр
                     };
                 } else {
-                    // Если карта закрыта
                     item.innerText = '?';
-                    // Если хочешь менять цвет закрытых из базы, можно так:
-                    // item.style.backgroundColor = card.color || '#B0BEC5';
                 }
 
                 collectionGrid.appendChild(item);
@@ -585,7 +540,7 @@
             timerDisplay.innerText = "";
         }
 
-        // Секретный сброс (7 кликов) - ЧИСТИТ И КОЛЛЕКЦИЮ ТОЖЕ
+        // Секретный сброс (7 кликов)
         let tapCount = 0;
         let tapTimer = null;
         timerDisplay.addEventListener('click', function() {
@@ -594,8 +549,8 @@
             tapTimer = setTimeout(() => { tapCount = 0; }, 500);
 
             if (tapCount >= 7) {
-                localStorage.clear(); // ЧИСТИМ ВСЁ (и таймер, и коллекцию)
-                alert("🛠 Сброс полный (коллекция тоже удалена)");
+                localStorage.clear(); 
+                alert("🛠 Сброс полный");
                 location.reload(); 
             }
         });
