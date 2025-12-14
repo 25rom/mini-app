@@ -125,7 +125,7 @@
             height: 100%;
             position: relative;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
+            transform-: preserve-3d;
         }
 
         .card.is-flipped {
@@ -242,7 +242,30 @@
         .collection-item:active {
             transform: scale(0.95);
         }
+/* Кнопка коллекции в правом верхнем углу */
+        .collection-btn-corner {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 44px;
+            height: 44px;
+            background-color: white; /* Белый фон для контраста */
+            border: none;
+            border-radius: 12px; /* Скругленные углы */
+            color: #00796B; /* Цвет иконки */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Легкая тень */
+            z-index: 30;
+            transition: transform 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
 
+        .collection-btn-corner:active {
+            transform: scale(0.90);
+        }
     </style>
 </head>
 <body>
@@ -277,7 +300,37 @@
         <div id="timerDisplay" class="timer-display"></div>
 
         <!-- Кнопка перехода в коллекцию -->
-        <button class="btn btn-outline" onclick="openCollection()">🎴 Моя коллекция</button>
+       <!-- 2. ИГРОВОЙ ЭКРАН -->
+    <div id="game-screen">
+        
+        <!-- НОВАЯ КНОПКА КОЛЛЕКЦИИ (Вверху справа) -->
+        <button class="collection-btn-corner" onclick="openCollection()">
+            <!-- Иконка 4 квадратика (SVG) -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+        </button>
+
+        <div class="scene" onclick="flipCard()">
+            <div class="card" id="myCard">
+                <div class="card__face card__face--front">
+                    <img id="frontImg" src="" alt="">
+                </div>
+                <div class="card__face card__face--back">
+                    <img id="backImg" src="" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class="hint-text" id="hintText">нажми на карточку, чтобы перевернуть</div>
+
+        <button id="drawBtn" class="btn btn-primary" onclick="handleDrawClick()">взять направление</button>
+        <div id="timerDisplay" class="timer-display"></div>
+
+        <!-- СТАРУЮ КНОПКУ "Моя коллекция" ОТСЮДА НУЖНО УДАЛИТЬ -->
     </div>
 
     <!-- 3. ЭКРАН КОЛЛЕКЦИИ -->
