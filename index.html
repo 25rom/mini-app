@@ -24,6 +24,47 @@
             color: #333;
         }
 
+        /* === ОБЩИЕ КНОПКИ === */
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            width: 80%;
+            max-width: 300px;
+            margin: 10px auto; /* Центрируем */
+        }
+
+        .btn-primary {
+            background-color: #007aff;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        .btn-disabled {
+            background-color: #B0BEC5;
+            color: #fff;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #00796B;
+            color: #00796B;
+            margin-top: 5px;
+            padding: 10px 20px;
+            font-size: 15px;
+        }
+
         /* === ЭКРАН ПРИВЕТСТВИЯ === */
         #welcome-screen {
             position: absolute;
@@ -32,7 +73,7 @@
             width: 100%;
             height: 100%;
             background: #B2EBF2;
-            z-index: 10;
+            z-index: 20;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -44,7 +85,7 @@
         }
 
         .welcome-gif {
-            width: 170px; /* Размер гифки */
+            width: 170px;
             height: auto;
             margin-bottom: 20px;
             border-radius: 10px;
@@ -57,21 +98,13 @@
             max-width: 320px;
             margin-bottom: 30px;
         }
-        /* Добавляем отступы между абзацами */
-        .welcome-text p {
-            margin: 0 0 15px 0; /* Отступ снизу у каждого абзаца 15px */
-            padding: 0;
-        }
-        
-        /* Убираем отступ у последнего абзаца, чтобы он не толкал кнопку */
-        .welcome-text p:last-child {
-            margin-bottom: 0;
-        }
+        .welcome-text p { margin: 0 0 15px 0; padding: 0; }
+        .welcome-text p:last-child { margin-bottom: 0; }
 
         /* === ИГРОВАЯ СЦЕНА === */
         #game-screen {
             flex: 1;
-            display: none; /* Скрыто по умолчанию */
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -129,76 +162,103 @@
             color: #8e8e93;
             font-size: 14px;
             text-align: center;
-            /* НОВОЕ: Скрываем текст по умолчанию */
-            opacity: 0; 
+            opacity: 0;
             transition: opacity 0.5s;
-        }
-
-        /* === КНОПКИ === */
-        .btn {
-            margin-top: 30px;
-            padding: 16px 32px;
-            border: none;
-            border-radius: 16px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            -webkit-tap-highlight-color: transparent;
-            width: 80%;
-            max-width: 300px;
-        }
-
-        .btn-primary {
-            background-color: #007aff;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.96);
-        }
-
-        .btn-disabled {
-            background-color: #e5e5ea;
-            color: #8e8e93;
-            cursor: default;
-            box-shadow: none;
         }
 
         .timer-display {
             font-family: monospace;
-            font-size: 14px;
+            font-size: 13px;
             margin-top: 5px;
+            color: #555;
+            min-height: 20px;
+        }
+
+        /* === ЭКРАН КОЛЛЕКЦИИ === */
+        #collection-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #E0F7FA;
+            z-index: 15;
+            display: none; /* Скрыто по умолчанию */
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Прокрутка */
+        }
+
+        .collection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .collection-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00796B;
+        }
+
+        /* Сетка коллекции */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 колонки */
+            gap: 15px;
+            padding-bottom: 40px;
+        }
+
+        .collection-item {
+            aspect-ratio: 16/9; /* Пропорция как у твоих карт */
+            background-color: #B0BEC5; /* Серый цвет закрытой карты */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: rgba(255,255,255,0.5);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        /* Стили для открытой карты */
+        .collection-item.unlocked {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        .collection-item.unlocked img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .collection-item:active {
+            transform: scale(0.95);
         }
 
     </style>
 </head>
 <body>
 
-    <!-- ЭКРАН ПРИВЕТСТВИЯ -->
+    <!-- 1. ЭКРАН ПРИВЕТСТВИЯ -->
     <div id="welcome-screen">
-        <!-- СЮДА ВСТАВЬ ССЫЛКУ НА СВОЮ ГИФКУ ИЛИ КАРТИНКУ -->
         <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHpydDhzaTZxbGw3azZ3eW1xcjNvb2FmdmJjY3drcTkxdWhzbG1mcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/flqS9MxwSjkgdO5UCe/giphy.gif" class="welcome-gif" alt="Intro">
-        
         <div class="welcome-text">
-            <p>Сделай глубокий вдох и длинный выдох, повтори 3-4 цикла</p>
-            
-            <p>Расслабь лицо и плечи. Отпусти напряжение, желания и ожидания</p>
-            
-            <p>Продолжай дышать. Сфокусируйся на внутреннем запросе или ощущении</p>
-            
-            <p>Когда почувствуешь тишину пространства, жми<br><b>✨ СО-НАСТРОИТЬСЯ ✨</b></p>
-            
-            <p>Карточка направит намерение на ближайшее время</p>
-            
-            <p>Практикуй асаны, дыши, медитируй ✨ возвращайся к ней в течение дня</p>
+            <p>Сделай глубокий вдох и длинный выдох...</p>
+            <p>Сфокусируйся на внутреннем запросе.</p>
+            <p>Когда почувствуешь тишину, жми<br><b>✨ СО-НАСТРОИТЬСЯ ✨</b></p>
         </div>
-        
         <button class="btn btn-primary" onclick="startGame()">✨ СО-НАСТРОИТЬСЯ ✨</button>
     </div>
 
-    <!-- ОСНОВНОЙ ЭКРАН -->
+    <!-- 2. ИГРОВОЙ ЭКРАН -->
     <div id="game-screen">
         <div class="scene" onclick="flipCard()">
             <div class="card" id="myCard">
@@ -213,24 +273,38 @@
 
         <div class="hint-text" id="hintText">нажми на карточку, чтобы перевернуть</div>
 
-        <!-- Кнопка действия -->
         <button id="drawBtn" class="btn btn-primary" onclick="handleDrawClick()">взять направление</button>
         <div id="timerDisplay" class="timer-display"></div>
+
+        <!-- Кнопка перехода в коллекцию -->
+        <button class="btn btn-outline" onclick="openCollection()">🎴 Моя коллекция</button>
+    </div>
+
+    <!-- 3. ЭКРАН КОЛЛЕКЦИИ -->
+    <div id="collection-screen">
+        <div class="collection-header">
+            <div class="collection-title">Мои карты</div>
+            <button onclick="closeCollection()" style="background:none; border:none; font-size:24px;">✕</button>
+        </div>
+        <div class="collection-grid" id="collectionGrid">
+            <!-- Сюда скрипт сам добавит квадратики -->
+        </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        // Красим "шапку" и "дно" самого Телеграма в твой цвет
         tg.setHeaderColor('#E0F7FA');
         tg.setBackgroundColor('#E0F7FA');
+
         // ==========================================
         // БАЗА КАРТ
         // ==========================================
+        // Добавил поле color (на будущее, если захочешь менять цвет фона закрытых)
         const cardsDatabase = [
-            { front: 'reshimost.jpg', back: 'reshimost_back.jpg' },
-            { front: 'zabota.jpg', back: 'zabota_back.jpg' },
-            { front: 'igrivost.jpg', back: 'igrivost_back.jpg' },
+            { front: 'reshimost.jpg', back: 'reshimost_back.jpg', color: '#FFCDD2' },
+            { front: 'zabota.jpg', back: 'zabota_back.jpg', color: '#C8E6C9' },
+            { front: 'igrivost.jpg', back: 'igrivost_back.jpg', color: '#BBDEFB' },
             { front: 'disciplina.jpg', back: 'back1.jpg' },
             { front: 'igrivost.jpg', back: 'igrivost_back.jpg' },
             { front: 'estestven.jpg', back: 'back2.jpg' },
@@ -244,7 +318,6 @@
             { front: 'zabota.jpg', back: 'back2.jpg'}
         ];
 
-        // НАСТРОЙКИ ВРЕМЕНИ (13.5 часов в миллисекундах)
         const COOLDOWN_HOURS = 13.5;
         const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000; 
 
@@ -255,84 +328,60 @@
         const backImg = document.getElementById('backImg');
         const drawBtn = document.getElementById('drawBtn');
         const timerDisplay = document.getElementById('timerDisplay');
+        const hintText = document.getElementById('hintText');
+        
         const welcomeScreen = document.getElementById('welcome-screen');
         const gameScreen = document.getElementById('game-screen');
+        const collectionScreen = document.getElementById('collection-screen');
+        const collectionGrid = document.getElementById('collectionGrid');
 
-        // === 1. ЛОГИКА СТАРТА ===
+        // === 1. ЗАГРУЗКА И СТАРТ ===
         function startGame() {
-            // Скрываем приветствие
             welcomeScreen.style.opacity = '0';
             setTimeout(() => {
                 welcomeScreen.style.display = 'none';
                 gameScreen.style.display = 'flex';
-                // Небольшая задержка перед появлением
                 setTimeout(() => { gameScreen.style.opacity = '1'; }, 100);
             }, 500);
-            // ВАЖНО: Запускаем логику игры
             checkState();
-            }
-           // === 2. ПРОВЕРКА СОСТОЯНИЯ (ПАМЯТЬ + МАГИЯ 3 СЕКУНД) ===
+        }
+
+        // === 2. ПРОВЕРКА СОСТОЯНИЯ ===
         function checkState() {
             const lastDrawTime = localStorage.getItem('lastDrawTime');
             const savedCardIndex = localStorage.getItem('savedCardIndex');
             const now = Date.now();
-            // Получаем доступ к тексту подсказки
-            const hintText = document.getElementById('hintText');
 
-            // СЦЕНАРИЙ 1: Карта уже вытянута и таймер тикает
+            // Если есть сохраненная последняя карта
             if (lastDrawTime && savedCardIndex !== null) {
                 const timePassed = now - parseInt(lastDrawTime);
-
                 if (timePassed < COOLDOWN_MS) {
-                    // Время не вышло: Сразу показываем карту пользователя
+                    // Таймер идет - показываем карту
                     loadCard(parseInt(savedCardIndex));
                     lockButton(COOLDOWN_MS - timePassed);
-                    
-                    // ВАЖНО: Если карта уже есть, показываем текст
                     hintText.style.opacity = '1';
                     return; 
                 }
             }
 
-           // СЦЕНАРИЙ 2: Можно тянуть новую (первый раз или таймер истек)
+            // Иначе - новая игра
             unlockButton();
-            
-            // ВАЖНО: Скрываем текст подсказки во время настройки
             hintText.style.opacity = '0';
             
-            // 1. Ставим заглушку (Узор/Магию) ПО ТВОЕЙ ССЫЛКЕ
             const mandalaUrl = 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzd3YnFwcXRnODU1eGJya3N0ODg2anp6M3U2dzJhbWNnbWw2aGJzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Pu1SRAVyJJnF70sU3r/giphy.gif';
-            
             frontImg.src = mandalaUrl; 
             backImg.src = mandalaUrl; 
 
-            // 2. Блокируем кнопку на 4 секунды и запускаем анимацию текста
+            // Блокировка и Дыхание
             const originalText = "вытащить новую карточку";
-            
-            drawBtn.classList.add('btn-disabled'); // Делаем серой
+            drawBtn.classList.add('btn-disabled'); 
             drawBtn.classList.remove('btn-primary');
-            
-            // Отключаем клик по кнопке
             drawBtn.style.pointerEvents = 'none'; 
 
-            // === АНИМАЦИЯ ТЕКСТА ===
-            
-            // Старт (0 сек)
             drawBtn.innerText = "Вдох...";
-
-            // Через 1.5 сек
+            setTimeout(() => { drawBtn.innerText = "Выдох..."; }, 1500);
+            setTimeout(() => { drawBtn.innerText = "Синхрония..."; }, 3000);
             setTimeout(() => {
-                drawBtn.innerText = "Выдох...";
-            }, 1500);
-
-            // Через 3.0 сек
-            setTimeout(() => {
-                drawBtn.innerText = "Синхрония...";
-            }, 3000);
-
-            // 3. Финал через 4 секунды
-            setTimeout(() => {
-                // Включаем кнопку обратно
                 drawBtn.classList.remove('btn-disabled');
                 drawBtn.classList.add('btn-primary');
                 drawBtn.innerText = originalText;
@@ -340,49 +389,108 @@
             }, 4000); 
         }
 
-        // === 3. РАНДОМ ПО ЗОЛОТОМУ СЕЧЕНИЮ ===
+        // === 3. МЕХАНИКА ВЫТЯГИВАНИЯ ===
         function goldenRatioRandom(max) {
-            // ФИЛОСОФИЯ: Берем текущий момент времени и умножаем на число Бога (Phi)
             const phi = 1.618033988749895;
             const now = Date.now();
-            
-            // Получаем дробную часть от произведения времени на Phi
-            // Это создает "хаотичное", но детерминированное число от 0 до 1
             const randomVal = (now * phi) % 1; 
-
             return Math.floor(randomVal * max);
         }
 
-        // === 4. ТЯНЕМ КАРТУ ===
         function handleDrawClick() {
-            // Если кнопка заблокирована (класс disabled), ничего не делаем
             if (drawBtn.classList.contains('btn-disabled')) return;
-
-            // 1. Выбираем новую карту
             const newIndex = goldenRatioRandom(cardsDatabase.length);
             
-            // 2. Анимация (если карта уже была перевернута, вернем назад)
             if (cardElement.classList.contains('is-flipped')) {
                 cardElement.classList.remove('is-flipped');
-                setTimeout(() => {
-                    performDraw(newIndex); }, 300);
+                setTimeout(() => { performDraw(newIndex); }, 300);
             } else {
                 performDraw(newIndex);
             }
         }
-        
+
         function performDraw(index) {
             loadCard(index);
+            
+            // 1. Сохраняем "текущую" (для таймера)
             localStorage.setItem('savedCardIndex', index);
             localStorage.setItem('lastDrawTime', Date.now());
+
+            // 2. Сохраняем в КОЛЛЕКЦИЮ (Массив)
+            addToCollection(index);
+
             lockButton(COOLDOWN_MS);
-            
-            // НОВОЕ: Показываем текст подсказки
-            document.getElementById('hintText').style.opacity = '1';
+            hintText.style.opacity = '1';
+        }
+
+        // === 4. ЛОГИКА КОЛЛЕКЦИИ ===
+        
+        // Получить массив открытых карт из памяти
+        function getUnlockedCards() {
+            const storage = localStorage.getItem('unlockedCards');
+            return storage ? JSON.parse(storage) : [];
+        }
+
+        // Добавить карту в коллекцию
+        function addToCollection(index) {
+            let unlocked = getUnlockedCards();
+            if (!unlocked.includes(index)) {
+                unlocked.push(index);
+                localStorage.setItem('unlockedCards', JSON.stringify(unlocked));
+            }
+        }
+
+        // Открыть экран коллекции
+        function openCollection() {
+            gameScreen.style.display = 'none';
+            collectionScreen.style.display = 'flex';
+            renderCollectionGrid();
+        }
+
+        // Закрыть экран коллекции
+        function closeCollection() {
+            collectionScreen.style.display = 'none';
+            gameScreen.style.display = 'flex';
+        }
+
+        // Отрисовка сетки
+        function renderCollectionGrid() {
+            collectionGrid.innerHTML = ''; // Очищаем
+            const unlocked = getUnlockedCards();
+
+            // Создаем квадратики для КАЖДОЙ карты в базе
+            cardsDatabase.forEach((card, index) => {
+                const item = document.createElement('div');
+                item.className = 'collection-item';
+                
+                // Если карта открыта
+                if (unlocked.includes(index)) {
+                    item.classList.add('unlocked');
+                    // Вставляем картинку
+                    const img = document.createElement('img');
+                    img.src = 'img/' + card.front;
+                    item.appendChild(img);
+                    
+                    // Клик по карте в коллекции -> открывает её в игре
+                    item.onclick = () => {
+                        loadCard(index); // Загружаем её на сцену
+                        closeCollection(); // Закрываем коллекцию
+                        hintText.style.opacity = '1';
+                        // Если таймер не активен, можно бы что-то придумать, 
+                        // но пока просто показываем как просмотр
+                    };
+                } else {
+                    // Если карта закрыта
+                    item.innerText = '?';
+                    // Если хочешь менять цвет закрытых из базы, можно так:
+                    // item.style.backgroundColor = card.color || '#B0BEC5';
+                }
+
+                collectionGrid.appendChild(item);
+            });
         }
 
         // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
-        
         function loadCard(index) {
             currentCardIndex = index;
             const card = cardsDatabase[index];
@@ -394,20 +502,17 @@
             cardElement.classList.toggle('is-flipped');
         }
 
-        // Блокировка кнопки и запуск таймера
         function lockButton(remainingTime) {
             drawBtn.innerText = "направление выбрано";
             drawBtn.classList.add('btn-disabled');
             drawBtn.classList.remove('btn-primary');
-            
             updateTimer(remainingTime);
             
-            // Обновляем таймер каждую секунду
             const interval = setInterval(() => {
                 remainingTime -= 1000;
                 if (remainingTime <= 0) {
                     clearInterval(interval);
-                    unlockButton();
+                    location.reload(); 
                 } else {
                     updateTimer(remainingTime);
                 }
@@ -417,7 +522,7 @@
         function updateTimer(ms) {
             const hours = Math.floor(ms / (1000 * 60 * 60));
             const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-            timerDisplay.innerText = `новая игра будет доступна через: ${hours}ч ${minutes}м`;
+            timerDisplay.innerText = `новая игра через: ${hours}ч ${minutes}м`;
         }
 
         function unlockButton() {
@@ -426,31 +531,18 @@
             drawBtn.classList.add('btn-primary');
             timerDisplay.innerText = "";
         }
-// ==========================================
-        // СЕКРЕТНЫЙ СБРОС (РЕЖИМ АДМИНА)
-        // ==========================================
-        
+
+        // Секретный сброс (7 кликов) - ЧИСТИТ И КОЛЛЕКЦИЮ ТОЖЕ
         let tapCount = 0;
         let tapTimer = null;
-
-        // Навешиваем секрет на блок с таймером
         timerDisplay.addEventListener('click', function() {
             tapCount++;
-            
-            // Если пауза между кликами больше 0.5 сек, сбрасываем счетчик
             clearTimeout(tapTimer);
             tapTimer = setTimeout(() => { tapCount = 0; }, 500);
 
-            // Если настучал 7 раз
             if (tapCount >= 7) {
-                // 1. Чистим память
-                localStorage.removeItem('lastDrawTime');
-                localStorage.removeItem('savedCardIndex');
-                
-                // 2. Визуально подтверждаем
-                alert("🛠 РЕЖИМ РАЗРАБОТЧИКА: Таймер сброшен!");
-                
-                // 3. Перезагружаем страницу, чтобы начать сначала
+                localStorage.clear(); // ЧИСТИМ ВСЁ (и таймер, и коллекцию)
+                alert("🛠 Сброс полный (коллекция тоже удалена)");
                 location.reload(); 
             }
         });
