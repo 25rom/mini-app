@@ -145,6 +145,38 @@
             background-color: #00796B;
         }
 
+        /* --- Анимация текста в онбординге --- */
+        
+        /* Исходное состояние: текст невидим и чуть смещен вниз */
+        .ob-slide.active .ob-text p {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: textFadeIn 0.8s ease forwards;
+        }
+
+        /* Первая строчка появляется почти сразу */
+        .ob-slide.active .ob-text p:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        /* Вторая строчка появляется через 2.3 секунды (0.3 + 2.0) */
+        .ob-slide.active .ob-text p:nth-child(2) {
+            animation-delay: 2.3s;
+        }
+
+        /* Третья строчка появляется через 4.3 секунды */
+        .ob-slide.active .ob-text p:nth-child(3) {
+            animation-delay: 4.3s;
+        }
+
+        /* Сама анимация появления */
+        @keyframes textFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -419,48 +451,48 @@
         <!-- Слайд 1 -->
         <div class="ob-slide active" id="ob-slide-1">
             <div class="ob-text">
-                <p>Это набор духовных направляющих.</p>
-                <p>Каждая карточка описывает добродетель, которая рассматривается как атрибут человеческой Души.</p>
-                <p>Эти карточки — подходящий инструмент для тех, кто ищет не рациональные стратегии, а глубокие внутренние трансформации и стремится к состоянию гармонии.</p>
+                <p>Это набор духовных направляющих</p>
+                <p>Каждая карточка описывает добродетель, которая рассматривается как атрибут человеческой Души</p>
+                <p>Эти карточки — подходящий инструмент для тех, кто ищет не рациональные стратегии, а глубокие внутренние трансформации и стремится к состоянию гармонии</p>
             </div>
         </div>
 
         <!-- Слайд 2 (Был пропущен) -->
         <div class="ob-slide" id="ob-slide-2">
             <div class="ob-text">
-                <p>Вытаскивай карточку в начале дня или вечером, когда можешь уделить себе хотя бы 5 минут, как если бы ничего кроме тебя не существовало.</p>
-                <p>Прочти короткую фразу на оборотной стороне карточки. Это указатель направления.</p>
+                <p>Вытаскивай карточку в начале дня или вечером, когда можешь уделить себе хотя бы 5 минут, как если бы ничего кроме тебя не существовало</p>
+                <p>Прочти короткую фразу на оборотной стороне карточки. Это указатель направления</p>
             </div>
         </div>
 
         <!-- Слайд 3 -->
         <div class="ob-slide" id="ob-slide-3">
             <div class="ob-text">
-                <p>Поразмышляй, визуализируй или медитируй, фокусируясь на возникшем образе, мысли, идее или состоянии.</p>
-                <p>Разворачивай содержимое, используя собственный контекст — исследуй, изучай, проникай глубже, расширяй.</p>
+                <p>Поразмышляй, визуализируй или медитируй, фокусируясь на возникшем образе, мысли, идее или состоянии</p>
+                <p>Разворачивай содержимое, используя собственный контекст — исследуй, изучай, проникай глубже, расширяй</p>
             </div>
         </div>
 
         <!-- Слайд 4 -->
         <div class="ob-slide" id="ob-slide-4">
             <div class="ob-text">
-                <p>Если практикуешь йогу — выполни указанные асаны или выбери свои, чтобы полученное состояние воплощалось через ощущение в теле.</p>
+                <p>Если практикуешь йогу — выполни указанные асаны или выбери свои, чтобы полученное состояние воплощалось через ощущение в теле</p>
             </div>
         </div>
 
         <!-- Слайд 5 -->
         <div class="ob-slide" id="ob-slide-5">
             <div class="ob-text">
-                <p>Возвращайся к карточке и прожитому опыту в течении дня и любой подходящей ситуации. Я лично рекомендую рефлексировать в дневник или делать заметки, если еще не делаешь этого.</p>
-                <p>Используй вытянутую карточку в течении нескольких дней или пока актуально. Возвращайся в бот по зову сердца!</p>
+                <p>Возвращайся к карточке и прожитому опыту в течении дня и любой подходящей ситуации. Я лично рекомендую рефлексировать в дневник или делать заметки, если еще не делаешь этого</p>
+                <p>Используй вытянутую карточку в течении нескольких дней или пока актуально. Возвращайся в бот по зову сердца</p>
             </div>
         </div>
 
         <!-- Слайд 6 -->
         <div class="ob-slide" id="ob-slide-6">
             <div class="ob-text">
-                <p>Используйте данное руководство только лишь как вектор.</p>
-                <p>Как и по какому пути идти — ты решаешь сам!</p>
+                <p>Используйте данное руководство только лишь как вектор</p>
+                <p>Как и по какому пути идти — ты решаешь сам</p>
             </div>
         </div>
 
@@ -611,37 +643,96 @@
         const collectionScreen = document.getElementById('collection-screen');
         const collectionGrid = document.getElementById('collectionGrid');
 
-        // === ЛОГИКА ОНБОРДИНГА ===
+        // === ЛОГИКА ОНБОРДИНГА (ОБНОВЛЕННАЯ) ===
         let currentObStep = 1;
         const totalObSteps = 6;
         const obScreen = document.getElementById('onboarding-screen');
 
+        // Переменные для свайпа
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // Слушаем касания экрана
+        obScreen.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        obScreen.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        // Обработка свайпа
+        function handleSwipe() {
+            const threshold = 50; // Минимальное расстояние для считывания свайпа
+            
+            if (touchEndX < touchStartX - threshold) {
+                // Свайп ВЛЕВО (Следующий слайд)
+                nextOnboardingStep();
+            }
+            
+            if (touchEndX > touchStartX + threshold) {
+                // Свайп ВПРАВО (Предыдущий слайд)
+                prevOnboardingStep();
+            }
+        }
+
         function checkFirstLaunch() {
             if (!localStorage.getItem('onboardingDone')) {
-                // Если нет метки - показываем обучение
                 obScreen.style.display = 'flex';
                 welcomeScreen.style.display = 'none'; 
             } else {
-                // Если есть метка - показываем экран вдоха
                 startGameSequence();
             }
         }
 
         function nextOnboardingStep() {
+            // Если это последний слайд — завершаем
+            if (currentObStep >= totalObSteps) {
+                completeOnboarding();
+                return;
+            }
+
+            // Скрываем текущий
             document.getElementById(`ob-slide-${currentObStep}`).classList.remove('active');
             document.getElementById(`dot-${currentObStep}`).classList.remove('active');
             
+            // Идем вперед
             currentObStep++;
 
-            if (currentObStep > totalObSteps) {
-                completeOnboarding();
+            // Показываем следующий
+            updateSlideView();
+        }
+
+        function prevOnboardingStep() {
+            // Если это первый слайд — назад идти некуда
+            if (currentObStep <= 1) return;
+
+            // Скрываем текущий
+            document.getElementById(`ob-slide-${currentObStep}`).classList.remove('active');
+            document.getElementById(`dot-${currentObStep}`).classList.remove('active');
+
+            // Идем назад
+            currentObStep--;
+
+            // Показываем предыдущий
+            updateSlideView();
+        }
+
+        // Вспомогательная функция отрисовки (чтобы не дублировать код)
+        function updateSlideView() {
+            const nextSlide = document.getElementById(`ob-slide-${currentObStep}`);
+            const nextDot = document.getElementById(`dot-${currentObStep}`);
+            const nextBtn = document.getElementById('ob-next-btn');
+
+            nextSlide.classList.add('active');
+            nextDot.classList.add('active');
+
+            // Меняем текст кнопки на последнем слайде
+            if (currentObStep === totalObSteps) {
+                nextBtn.innerText = "Понятно";
             } else {
-                document.getElementById(`ob-slide-${currentObStep}`).classList.add('active');
-                document.getElementById(`dot-${currentObStep}`).classList.add('active');
-                
-                if (currentObStep === totalObSteps) {
-                    document.getElementById('ob-next-btn').innerText = "Понятно";
-                }
+                nextBtn.innerText = "Далее";
             }
         }
 
@@ -650,17 +741,14 @@
             obScreen.style.opacity = '0';
             setTimeout(() => {
                 obScreen.style.display = 'none';
-                startGameSequence(); // Переходим к следующему шагу
+                startGameSequence();
             }, 500);
         }
         
-        // ВОТ ЭТА ФУНКЦИЯ, КОТОРОЙ НЕ ХВАТАЛО
         function startGameSequence() {
              welcomeScreen.style.display = 'flex';
              setTimeout(() => { welcomeScreen.style.opacity = '1'; }, 100);
-             // Здесь мы просто ждем, пока юзер нажмет "Со-настроиться"
-             // Но на всякий случай можно проверить состояние (вдруг он уже играл сегодня)
-             // checkState(); // Если раскомментировать, то "старики" пропустят экран вдоха
+             checkState();
         }
 
         // === 1. ЗАГРУЗКА И СТАРТ (По кнопке "Со-настроиться") ===
