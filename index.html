@@ -77,7 +77,32 @@
             cursor: default;
             box-shadow: none;
         }
-/* === ОНБОРДИНГ (НОВЫЙ БЛОК) === */
+
+        /* Цвета маркеров */
+        .m-orange {
+            background-color: #FFE0B2; /* Морковный/Персиковый */
+            padding: 0 4px;
+            border-radius: 4px;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+        
+        .m-purple {
+            background-color: #E1BEE7; /* Фиолетовый */
+            padding: 0 4px;
+            border-radius: 4px;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+        
+        .m-green {
+            background-color: #C8E6C9; /* Зеленый/Мятный */
+            padding: 0 4px;
+            border-radius: 4px;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+        /* === ОНБОРДИНГ (НОВЫЙ БЛОК) === */
         #onboarding-screen {
             position: absolute;
             top: 0;
@@ -452,15 +477,15 @@
         <div class="ob-slide active" id="ob-slide-1">
             <div class="ob-text">
                 <p>Это набор духовных направляющих</p>
-                <p>Каждая карточка описывает добродетель, которая рассматривается как атрибут человеческой Души</p>
-                <p>Эти карточки — подходящий инструмент для тех, кто ищет не рациональные стратегии, а глубокие внутренние трансформации и стремится к состоянию гармонии</p>
+                <p>Каждая карточка описывает <span class="m-orange">добродетель</span>, которая рассматривается как <span class="m-orange">атрибут человеческой Души</span></p>
+                <p>Эти карточки — подходящий <span class="m-orange">инструмент</span> для тех, кто ищет не рациональные стратегии, а глубокие <span class="m-purple">внутренние трансформации</span> и стремится к состоянию <span class="m-orange">гармонии</span></p>
             </div>
         </div>
 
         <!-- Слайд 2 (Был пропущен) -->
         <div class="ob-slide" id="ob-slide-2">
             <div class="ob-text">
-                <p>Вытаскивай карточку в начале дня или вечером, когда можешь уделить себе хотя бы 5 минут, как если бы ничего кроме тебя не существовало</p>
+                <p>Вытаскивай карточку в начале дня или вечером, когда можешь <span class="m-green">уделить себе 5 минут</span></p>
                 <p>Прочти короткую фразу на оборотной стороне карточки. Это указатель направления</p>
             </div>
         </div>
@@ -476,15 +501,15 @@
         <!-- Слайд 4 -->
         <div class="ob-slide" id="ob-slide-4">
             <div class="ob-text">
-                <p>Если практикуешь йогу — выполни предложенные асаны или выбери свои, чтобы полученное состояние воплощалось в жизнь через ощущения тела</p>
+                <p>Если практикуешь <span class="m-orange">йогу</span> — выполни предложенные асаны или выбери свои, чтобы <span class="m-orange">воплотить в реальность</span> полученное состояние</p>
             </div>
         </div>
 
         <!-- Слайд 5 -->
         <div class="ob-slide" id="ob-slide-5">
             <div class="ob-text">
-                <p>Возвращайся к карточке и прожитому опыту в течении дня и любой подходящей ситуации. Будет круто делать заметки или рефлексировать</p>
-                <p>Используй вытянутую карточку в течении нескольких дней, недель или пока актуально. Бери новые по зову сердца</p>
+                <p>Возвращайся к карточке и прожитому опыту в течении дня и любой подходящей ситуации.<br>Будет круто <span class="m-purple">делать заметки</span> или рефлексировать в дневнике</p>
+                <p>Используй вытянутую карточку в течении нескольких дней, недель или пока актуально<br>Бери новые по зову сердца</p>
             </div>
         </div>
 
@@ -818,6 +843,7 @@
                 drawBtn.classList.remove('btn-primary');
                 drawBtn.style.pointerEvents = 'none'; 
 
+                drawBtn.innerText = "Настройка..."; 
                 drawBtn.innerText = "Вдох...";
                 setTimeout(() => { drawBtn.innerText = "Выдох..."; }, 2000);
                 setTimeout(() => { drawBtn.innerText = "Синхрония..."; }, 3000);
@@ -826,7 +852,7 @@
                     drawBtn.classList.add('btn-primary');
                     drawBtn.innerText = originalText;
                     drawBtn.style.pointerEvents = 'auto'; 
-                }, 4000); 
+                }, 6000); 
             }
         }
 
