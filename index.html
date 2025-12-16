@@ -172,26 +172,31 @@
 
         /* --- Анимация текста в онбординге --- */
         
-        /* Исходное состояние: текст невидим и чуть смещен вниз */
-        .ob-slide.active .ob-text p {
+        /* === ГИБКАЯ АНИМАЦИЯ ЗАДЕРЖКИ === */
+        
+        /* Базовое состояние текста */
+        .ob-slide.active .anim-text {
             opacity: 0;
-            transform: translateY(20px);
+            display: inline; /* Важно, чтобы хайлайты не ломались */
             animation: textFadeIn 0.8s ease forwards;
+            line-height: 1.6;
         }
 
-        /* Первая строчка появляется почти сразу */
-        .ob-slide.active .ob-text p:nth-child(1) {
-            animation-delay: 0.1s;
-        }
+        /* Классы задержки (d-05 = 0.5 сек, d-20 = 2.0 сек и т.д.) */
+        /* Меняй эти значения, если хочешь ускорить/замедлить */
+        .d-0 { animation-delay: 0.1s; }  /* Сразу */
+        .d-05 { animation-delay: 0.5s; } /* Пауза 0.5 сек */
+        .d-10 { animation-delay: 1.0s; } /* Пауза 1 сек */
+        .d-15 { animation-delay: 1.5s; } 
+        .d-20 { animation-delay: 2.0s; } /* Пауза 2 сек */
+        .d-25 { animation-delay: 2.5s; }
+        .d-30 { animation-delay: 3.0s; } /* Пауза 3 сек */
+        .d-40 { animation-delay: 4.0s; } /* Долгая пауза */
 
-        /* Вторая строчка появляется через 2.3 секунды (0.1 + 1.0) */
-        .ob-slide.active .ob-text p:nth-child(2) {
-            animation-delay: 1.1s;
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Третья строчка появляется через 4.3 секунды */
-        .ob-slide.active .ob-text p:nth-child(3) {
-            animation-delay: 2s;
         }
 
         /* Сама анимация появления */
@@ -532,65 +537,111 @@
 </head>
 <body>
 <!-- ОНБОРДИНГ (ИСПРАВЛЕННАЯ НУМЕРАЦИЯ) -->
+   <!-- ОНБОРДИНГ (10 СЛАЙДОВ) -->
     <div id="onboarding-screen">
         
         <!-- Слайд 1 -->
         <div class="ob-slide active" id="ob-slide-1">
             <div class="ob-text">
-                <p>Это набор духовных направляющих</p>
-                <p>Каждая карточка описывает <span class="m-orange">добродетель</span>, которая рассматривается как атрибут человеческой Души</p>
-                <p>Эти карточки — подходящий <span class="m-orange">инструмент</span> для тех, кто ищет не рациональные стратегии, а глубокие <span class="m-purple">внутренние трансформации</span> и стремится к состоянию <span class="m-orange">гармонии</span></p>
+                <p>
+                    <span class="anim-text d-0">Это набор карточек <span class="h-cyan">для медитации</span>,</span>
+                    <br><br>
+                    <span class="anim-text d-10">для развития <span class="h-cyan">осознанности</span>, <span class="h-cyan">селф-коучинга</span> и <span class="h-mint">самоисследования</span>.</span>
+                </p>
             </div>
         </div>
 
-        <!-- Слайд 2 (Был пропущен) -->
+        <!-- Слайд 2 -->
         <div class="ob-slide" id="ob-slide-2">
             <div class="ob-text">
-                <p>Вытаскивай карточку в начале дня или вечером, когда можешь <span class="m-green">уделить себе 5 минут</span></p>
-                <p>Прочти короткую фразу на оборотной стороне карточки. Это указатель направления</p>
+                <p><span class="anim-text d-0">Карточки — <span class="h-cyan">подходящий инструмент</span> для тех, кто ищет не рациональные стратегии,</span></p>
+                <p><span class="anim-text d-15">а <span class="h-peach">глубокие внутренние трансформации</span></span></p>
+                <p><span class="anim-text d-25">и стремится к состоянию <span class="h-cyan">гармонии</span>.</span></p>
             </div>
         </div>
 
         <!-- Слайд 3 -->
         <div class="ob-slide" id="ob-slide-3">
             <div class="ob-text">
-                <p>Поразмышляй, визуализируй или медитируй, фокусируясь на возникшем образе, мысли, идее или состоянии</p>
-                <p>Разворачивай содержимое, используя собственный контекст — исследуй, изучай, проникай глубже, расширяй</p>
+                <p><span class="anim-text d-0">Каждая карточка описывает <span class="h-pink">добродетель</span>,</span></p>
+                <p><span class="anim-text d-10">которая подразумевается как <span class="h-pink">аспект человеческой Души</span>.</span></p>
             </div>
         </div>
 
         <!-- Слайд 4 -->
         <div class="ob-slide" id="ob-slide-4">
             <div class="ob-text">
-                <p>Если практикуешь <span class="m-orange">йогу</span> — выполни предложенные асаны или выбери свои, чтобы <span class="m-orange">воплотить в реальность</span> полученное состояние</p>
+                <p><span class="anim-text d-0">Вытаскивай карточку в начале дня или вечером,</span></p>
+                <p><span class="anim-text d-10">когда можешь <span class="h-mint">полностью уделить себе 5 минут</span>.</span></p>
             </div>
         </div>
 
         <!-- Слайд 5 -->
         <div class="ob-slide" id="ob-slide-5">
             <div class="ob-text">
-                <p>Возвращайся к карточке и прожитому опыту в течении дня и любой подходящей ситуации.<br>Будет круто <span class="m-purple">делать заметки</span> или рефлексировать в дневнике</p>
-                <p>Используй вытянутую карточку в течении нескольких дней, недель или пока актуально<br>Бери новые по зову сердца</p>
+                <p><span class="anim-text d-0">Прочти короткую фразу на оборотной стороне карточки.</span></p>
+                <p><span class="anim-text d-10">Это <span class="h-peach">указатель направления</span> мысли.</span></p>
             </div>
         </div>
 
         <!-- Слайд 6 -->
         <div class="ob-slide" id="ob-slide-6">
             <div class="ob-text">
-                <p>Это руководство только лишь как вектор</p>
-                <p>Как и по какому пути идти — ты решаешь сам</p>
+                <p><span class="anim-text d-0">Поразмышляй, визуализируй или <span class="h-pink">медитируй</span>,</span></p>
+                <p><span class="anim-text d-15">фокусируясь на мысли, идее, образе или состоянии.</span></p>
             </div>
         </div>
 
-        <!-- Навигация -->
+        <!-- Слайд 7 -->
+        <div class="ob-slide" id="ob-slide-7">
+            <div class="ob-text">
+                <p><span class="anim-text d-0"><span class="h-cyan">Разворачивай мысль</span>, используя личные ситуации —</span></p>
+                <p><span class="anim-text d-15">расширяй, <span class="h-cyan">проникай глубже</span>, исследуй, изучай.</span></p>
+            </div>
+        </div>
+
+        <!-- Слайд 8 -->
+        <div class="ob-slide" id="ob-slide-8">
+            <div class="ob-text">
+                <p><span class="anim-text d-0">Если практикуешь йогу — <span class="h-peach">выполни предложенные асаны</span> или выбери свои,</span></p>
+                <p><span class="anim-text d-20">чтобы <span class="h-peach">воплотить в реальность</span> полученное состояние.</span></p>
+            </div>
+        </div>
+
+        <!-- Слайд 9 -->
+        <div class="ob-slide" id="ob-slide-9">
+            <div class="ob-text">
+                <p><span class="anim-text d-0">Возвращайся к карточке и прожитому опыту <span class="h-pink">в течении дня</span> и любой подходящей ситуации.</span></p>
+                <p><span class="anim-text d-20">Будет круто <span class="h-pink">рефлексировать и делать заметки</span> в блокноте.</span></p>
+            </div>
+        </div>
+
+        <!-- Слайд 10 -->
+        <div class="ob-slide" id="ob-slide-10">
+            <div class="ob-text">
+                <p><span class="anim-text d-0"><span class="h-pink">Сделай скриншот</span> или скачай карту на телефон и обращайся к ней в любой момент.</span></p>
+                <br>
+                <p><span class="anim-text d-15">Используй вытянутую карточку столько времени, сколько посчитаешь нужным.</span></p>
+                <br>
+                <p><span class="anim-text d-30">Это лишь мои рекомендации, чтобы задать вектор.</span></p>
+                <p><span class="anim-text d-40"><span class="h-cyan">Как и каким путем идти — решать тебе!</span></span></p>
+            </div>
+        </div>
+
+        <!-- Навигация (Точки) -->
         <div class="ob-controls">
             <div class="ob-dots">
+                <!-- 10 точек -->
                 <div class="ob-dot active" id="dot-1"></div>
-                <div class="ob-dot" id="dot-2"></div> <!-- Исправлено -->
+                <div class="ob-dot" id="dot-2"></div>
                 <div class="ob-dot" id="dot-3"></div>
                 <div class="ob-dot" id="dot-4"></div>
                 <div class="ob-dot" id="dot-5"></div>
                 <div class="ob-dot" id="dot-6"></div>
+                <div class="ob-dot" id="dot-7"></div>
+                <div class="ob-dot" id="dot-8"></div>
+                <div class="ob-dot" id="dot-9"></div>
+                <div class="ob-dot" id="dot-10"></div>
             </div>
             <button class="btn btn-primary" onclick="nextOnboardingStep()" id="ob-next-btn">Далее</button>
         </div>
@@ -741,7 +792,7 @@
 
         // === ЛОГИКА ОНБОРДИНГА (ОБНОВЛЕННАЯ) ===
         let currentObStep = 1;
-        const totalObSteps = 6;
+        const totalObSteps = 10;
         const obScreen = document.getElementById('onboarding-screen');
 
         // Переменные для свайпа
