@@ -13,6 +13,20 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+    <!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105895834', 'ym');
+
+    ym(105895834, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/105895834" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+    
     <style>
         body {
             margin: 0;
@@ -387,8 +401,8 @@
         <!-- Слайд 8 -->
         <div class="ob-slide" id="ob-slide-8">
             <div class="ob-text">
-                <p><span class="anim-text d-0"><span class="m-orange">если хочешь</span> выполни асаны или выбери свои</span></p>
-                <p><span class="anim-text d-15">чтобы <span class="m-green">воплотить внутренние ощущения</span> в реальность и <span class="m-orange">прожить состояние</span></span></p>
+                <p><span class="anim-text d-0"><span class="m-green">если хочешь</span> выполни асаны или выбери свои</span></p>
+                <p><span class="anim-text d-15">чтобы <span class="m-purple">воплотить внутреннее состояние</span> в реальность и <span class="m-green">прожить ощущуения</span></span></p>
             </div>
         </div>
 
@@ -404,9 +418,9 @@
         <div class="ob-slide" id="ob-slide-10">
             <div class="ob-text">
                 <p><span class="anim-text d-15"><span class="m-green">делай заметки</span> в блокноте и <span class="m-green">саморефлексируй</span></span></p>
-                <br />
                 <p><span class="anim-text d-30"><span class="m-purple">это лишь мои рекомендации</span>, чтобы задать вектор</span></p>
-                <p><span class="anim-text d-45">как и зачем их использовать <span class="m-green">решать тебе!</span></span></p>
+                <br />
+                <p><span class="anim-text d-45">а как использовать карточки <span class="m-green">решаешь ты!</span></span></p>
             </div>
         </div>
 
@@ -528,6 +542,15 @@
     </div>
 
     <script>
+        // Функция для отправки цели в Метрику
+    // Замени XXXXXXXX на номер твоего счетчика (он есть в коде Яндекса)
+    function trackEvent(eventName) {
+        if (window.ym) {
+            window.ym(XXXXXXXX, 'reachGoal', eventName);
+            console.log('Событие отправлено:', eventName);
+        }
+    }
+        
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.setHeaderColor('#E0F7FA');
@@ -688,14 +711,45 @@
                 obScreen.style.display = 'none';
                 startGameSequence();
             }, 500);
+            trackEvent('onboarding_finish');
         }
+
+        function identifyUser() {
+        // Проверяем, есть ли данные от Телеграма
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+            
+            const user = window.Telegram.WebApp.initDataUnsafe.user;
+            
+            // Формируем данные
+            const userInfo = {
+                UserID: user.id,           // Уникальный ID (12345678)
+                Username: user.username,   // @username
+                Name: user.first_name,     // Имя
+                Language: user.language_code // Язык
+            };
+
+            console.log("User identified:", userInfo);
+
+            // Отправляем в Метрику как "Параметры визита"
+            // ВАЖНО: Замени XXXXXXXX на номер твоего счетчика!
+            if (window.ym) {
+                window.ym(XXXXXXXX, 'userParams', userInfo);
+            }
+        }
+    }
         
-        function startGameSequence() {
+       function startGameSequence() {
+             // === АНАЛИТИКА ===
+             trackEvent('main_screen_opened'); 
+             
+             // Идентифицируем пользователя (см. пункт 3 ниже)
+             identifyUser(); 
+
              welcomeScreen.style.display = 'flex';
              setTimeout(() => { welcomeScreen.style.opacity = '1'; }, 100);
              checkState();
         }
-
+        
         // === 1. ЗАГРУЗКА И СТАРТ (По кнопке "Со-настроиться") ===
         function startGame() {
             welcomeScreen.style.opacity = '0';
@@ -796,12 +850,20 @@
         }
 
         function performDraw(index) {
+            // === АНАЛИТИКА: ЖУЧОК ===
+            // Отправляем событие, что карта вытянута
+            trackEvent('card_drawn'); 
+            // Отправляем конкретный номер/название карты (для статистики популярности)
+            trackEvent('card_index_' + index);
+
             loadCard(index);
             const now = Date.now();
             localStorage.setItem('savedCardIndex', index);
             addToCollection(index);
             
             const isPromo = localStorage.getItem('isPromoActive') === 'true';
+            // Если у тебя был GodMode, добавь его проверку сюда сам, 
+            // в твоем примере выше его не было.
             
             if (isPromo) {
                 let drawHistory = JSON.parse(localStorage.getItem('drawHistory') || '[]');
@@ -880,6 +942,7 @@
             collectionScreen.style.display = 'flex';
             updatePromoUI();
             renderCollectionGrid();
+            trackEvent('collection_opened');
         }
 
         function closeCollection() {
