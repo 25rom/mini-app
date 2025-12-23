@@ -920,23 +920,23 @@
                     const img = document.createElement('img');
                     img.src = 'img/' + card.front;
                     item.appendChild(img);
+
+                    // Кнопка загрузки карты
+                  //  const downloadBtn = document.createElement('div'); 
+                  //  downloadBtn.className = 'download-mini-btn';
+                  //  downloadBtn.innerHTML = '⬇️'; 
                     
-                    const downloadBtn = document.createElement('div');
-                    downloadBtn.className = 'download-mini-btn';
-                    downloadBtn.innerHTML = '⬇️'; 
+                   // downloadBtn.onclick = (e) => {
+                   //     e.stopPropagation(); 
+                    //    const fullLink = window.location.href.replace('index.html', '') + 'img/' + card.front;
+              //      };
                     
-                    downloadBtn.onclick = (e) => {
-                        e.stopPropagation(); 
-                        const fullLink = window.location.href.replace('index.html', '') + 'img/' + card.front;
-                        Telegram.WebApp.openLink(fullLink);
-                    };
-                    
-                    item.appendChild(downloadBtn);
-                    item.onclick = () => {
-                        loadCard(index); 
-                        closeCollection(); 
-                        hintText.style.opacity = '1';
-                    };
+               //     item.appendChild(downloadBtn);
+               //     item.onclick = () => {
+                //        loadCard(index); 
+                 //       closeCollection(); 
+                //        hintText.style.opacity = '1';
+                //    }; //
                 } else {
                     item.innerText = '?';
                 }
