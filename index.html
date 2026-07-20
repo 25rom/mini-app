@@ -337,7 +337,7 @@
         <div class="ob-slide" id="ob-slide-5"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-purple">прочти</span> короткую фразу на оборотной стороне карточки</span></p><p><span class="anim-text d-15">это <span class="m-green">указатель направления</span> мысли</span></p></div></div>
         <div class="ob-slide" id="ob-slide-6"><div class="ob-text"><p><span class="anim-text d-0">поразмышляй, визуализируй или <span class="m-green">медитируй</span></span></p><p><span class="anim-text d-15"><span class="m-purple">фокусируйся</span> на идее, образе или ощущении</span></p></div></div>
         <div class="ob-slide" id="ob-slide-7"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-purple">разворачивай мысль</span> через личные ситуации</span></p><p><span class="anim-text d-15">расширяй контекст, <span class="m-green">проникай глубже</span>, исследуй</span></p></div></div>
-        <div class="ob-slide" id="ob-slide-8"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-green">если хочешь</span> выполни асаны или выбери свои</span></p><p><span class="anim-text d-15">чтобы <span class="m-purple">воплотить внутреннее состояние</span> в реальность и <span class="m-green">прожить ощущуения</span></span></p></div></div>
+        <div class="ob-slide" id="ob-slide-8"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-green">если хочешь</span> выполни асаны йоги</span></p><p><span class="anim-text d-15">чтобы <span class="m-purple">воплотить внутреннее состояние</span> в реальность и <span class="m-green">прожить ощущуения</span></span></p></div></div>
         <div class="ob-slide" id="ob-slide-9"><div class="ob-text"><p><span class="anim-text d-15"><span class="m-green">вытянутые карточки</span> хранятся в коллекции , <span class="m-green">делай заметки в блокноте</span></span></p><p><span class="anim-text d-0">рефлексируй и <span class="m-purple">возвращайся к коллекции</span> в любой подходящей ситуации</span></p><p><span class="anim-text d-15"><span class="m-purple">карточка</span> всегда <span class="m-green">напомнит о важном</span></span></p></div></div>
         <div class="ob-slide" id="ob-slide-10"><div class="ob-text"><p><span class="anim-text d-30">это мои рекомендации для работы с карточками</span></p><p><span class="anim-text d-45"><span class="m-green">как их использовать решаешь ты</span></span></p></div></div>
 
@@ -435,7 +435,7 @@
         }
 
         // === КОНСТАНТЫ ===
-        const SITE_STATES_URL = 'https://www.pranaway.art/motivation-sait/sostoyaniya.html#';
+        const SITE_STATES_URL = ((window.PRANAWAY_BASE || 'https://www.pranaway.art/motivation-sait/') + 'sostoyaniya.html#');
         const SYM_SVG = '<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="currentColor" stroke-width="2.8" stroke-linecap="round" fill="none"><line x1="24" y1="7" x2="24" y2="41"/><line x1="7" y1="24" x2="41" y2="24"/><line x1="12" y1="12" x2="36" y2="36"/><line x1="36" y1="12" x2="12" y2="36"/></g></svg>';
 
         // === АДМИН-ДОСТУП ===
@@ -512,9 +512,18 @@
 
         // === УТИЛИТЫ ===
         function openLink(url) {
-            if (tg && url.indexOf('http') === 0) { tg.openLink(url); }
-            else if (tg) { try { tg.openLink(url); } catch(e) { window.location.href = url; } }
-            else { window.open(url, '_blank'); }
+            try {
+                if (tg && typeof tg.openLink === 'function' && url.indexOf('http') === 0) {
+                    tg.openLink(url, { try_instant_view: false });
+                    return;
+                }
+                if (tg && typeof tg.openTelegramLink === 'function' && url.indexOf('https://t.me') === 0) {
+                    tg.openTelegramLink(url);
+                    return;
+                }
+            } catch (e) {}
+            const w = window.open(url, '_blank');
+            if (!w) { window.location.href = url; }
         }
         function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
