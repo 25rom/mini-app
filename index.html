@@ -169,23 +169,25 @@
             flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center;
             opacity: 0; transition: opacity 1s; position: relative;
         }
-        .scene { width: 300px; height: 120px; perspective: 1000px; cursor: pointer; margin-bottom: 20px; }
+        .scene { width: min(78vw, 380px); aspect-ratio: 1 / 1; perspective: 1000px; cursor: pointer; margin-bottom: 20px; }
         .card { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
         .card.is-flipped { transform: rotateY(180deg); }
         .card__face {
             position: absolute; width: 100%; height: 100%;
             backface-visibility: hidden; -webkit-backface-visibility: hidden;
             background-color: var(--milk);
-            border-radius: 22px;
+            border-radius: 28px;
             box-shadow: 0 16px 32px rgba(45,45,45,0.12);
             display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-        .card__face--front { position: relative; z-index: 2; }
+        .card__face--front { position: relative; z-index: 2; background: transparent; box-shadow: none; }
+        .card__face--front.has-card { box-shadow: 0 16px 32px rgba(45,45,45,0.12); }
         .card__face--back { position: absolute; top: 0; left: 0; transform: rotateY(180deg); }
 
-        #frontImg { width: 100%; height: auto; object-fit: contain; display: none; border-radius: 15px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); }
-        .face-idle { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-        .face-idle .breath-mark { width: 84px; height: 84px; }
+        /* Лицо-картинка карты (квадратный PNG) показывается целиком */
+        #frontImg { width: 100%; height: 100%; object-fit: contain; display: none; border-radius: 28px; }
+        .face-idle { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--milk); border-radius: 28px; box-shadow: 0 16px 32px rgba(45,45,45,0.12); }
+        .face-idle .breath-mark { width: 96px; height: 96px; }
 
         /* Оборот карты — капсула с семенной фразой */
         .back-capsule {
@@ -290,10 +292,10 @@
 
         .collection-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding-bottom: 40px; }
         .collection-item {
-            aspect-ratio: 5 / 2;
+            aspect-ratio: 1 / 1;
             background-color: var(--paper);
             border: 1px dashed var(--paper-line);
-            border-radius: 14px;
+            border-radius: 18px;
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
             transition: transform 0.2s;
@@ -337,7 +339,7 @@
         <div class="ob-slide" id="ob-slide-5"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-purple">прочти</span> короткую фразу на оборотной стороне карточки</span></p><p><span class="anim-text d-15">это <span class="m-green">указатель направления</span> мысли</span></p></div></div>
         <div class="ob-slide" id="ob-slide-6"><div class="ob-text"><p><span class="anim-text d-0">поразмышляй, визуализируй или <span class="m-green">медитируй</span></span></p><p><span class="anim-text d-15"><span class="m-purple">фокусируйся</span> на идее, образе или ощущении</span></p></div></div>
         <div class="ob-slide" id="ob-slide-7"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-purple">разворачивай мысль</span> через личные ситуации</span></p><p><span class="anim-text d-15">расширяй контекст, <span class="m-green">проникай глубже</span>, исследуй</span></p></div></div>
-        <div class="ob-slide" id="ob-slide-8"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-green">если хочешь</span> выполни асаны йоги</span></p><p><span class="anim-text d-15">чтобы <span class="m-purple">воплотить внутреннее состояние</span> в реальность и <span class="m-green">прожить ощущуения</span></span></p></div></div>
+        <div class="ob-slide" id="ob-slide-8"><div class="ob-text"><p><span class="anim-text d-0"><span class="m-green">если хочешь</span> выполни асаны или выбери свои</span></p><p><span class="anim-text d-15">чтобы <span class="m-purple">воплотить внутреннее состояние</span> в реальность и <span class="m-green">прожить ощущуения</span></span></p></div></div>
         <div class="ob-slide" id="ob-slide-9"><div class="ob-text"><p><span class="anim-text d-15"><span class="m-green">вытянутые карточки</span> хранятся в коллекции , <span class="m-green">делай заметки в блокноте</span></span></p><p><span class="anim-text d-0">рефлексируй и <span class="m-purple">возвращайся к коллекции</span> в любой подходящей ситуации</span></p><p><span class="anim-text d-15"><span class="m-purple">карточка</span> всегда <span class="m-green">напомнит о важном</span></span></p></div></div>
         <div class="ob-slide" id="ob-slide-10"><div class="ob-text"><p><span class="anim-text d-30">это мои рекомендации для работы с карточками</span></p><p><span class="anim-text d-45"><span class="m-green">как их использовать решаешь ты</span></span></p></div></div>
 
@@ -378,7 +380,7 @@
 
         <div class="scene" onclick="flipCard()">
             <div class="card" id="myCard">
-                <div class="card__face card__face--front">
+                <div class="card__face card__face--front" id="cardFrontFace">
                     <div class="face-idle" id="frontIdle">
                         <div class="breath-mark" id="ritualMark">
                             <span class="sym-slot"><svg viewBox="0 0 48 48"><g stroke="currentColor" stroke-width="2.8" stroke-linecap="round" fill="none"><line x1="24" y1="7" x2="24" y2="41"/><line x1="7" y1="24" x2="41" y2="24"/><line x1="12" y1="12" x2="36" y2="36"/><line x1="36" y1="12" x2="12" y2="36"/></g></svg></span>
@@ -832,6 +834,8 @@
             stopSymbolCarousel();
             frontImg.style.display = 'none';
             frontIdle.style.display = 'flex';
+            const frontFace = document.getElementById('cardFrontFace');
+            if (frontFace) frontFace.classList.remove('has-card');
             const slot = document.querySelector('#ritualMark .sym-slot');
             if (slot) slot.innerHTML = SYM_SVG;
             const backFace = document.getElementById('cardBackFace');
@@ -1054,6 +1058,8 @@
             frontIdle.style.display = 'none';
             frontImg.style.display = 'block';
             frontImg.src = 'img/' + card.front;
+            const frontFace = document.getElementById('cardFrontFace');
+            if (frontFace) frontFace.classList.add('has-card');
 
             // Шторка: полное содержание
             document.getElementById('sheetTitle').innerText = card.title || '';
