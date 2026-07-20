@@ -514,18 +514,25 @@
 
         // === УТИЛИТЫ ===
         function openLink(url) {
+            // Ссылки t.me — только через openTelegramLink: в текущем Telegram
+            // openLink их не открывает (из-за этого не работала «Задать вопрос»).
             try {
-                if (tg && typeof tg.openLink === 'function' && url.indexOf('http') === 0) {
-                    tg.openLink(url, { try_instant_view: false });
-                    return;
-                }
                 if (tg && typeof tg.openTelegramLink === 'function' && url.indexOf('https://t.me') === 0) {
                     tg.openTelegramLink(url);
                     return;
                 }
             } catch (e) {}
+            // Остальные ссылки открываем тем же надёжным способом, что и «Открыть блокнот».
             const w = window.open(url, '_blank');
-            if (!w) { window.location.href = url; }
+            if (w) return;
+            // Если окно заблокировано — резерв через Telegram, затем прямой переход.
+            try {
+                if (tg && typeof tg.openLink === 'function' && url.indexOf('http') === 0) {
+                    tg.openLink(url);
+                    return;
+                }
+            } catch (e) {}
+            window.location.href = url;
         }
         function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
